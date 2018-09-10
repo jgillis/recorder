@@ -1,3 +1,4 @@
+#include "recorder.hpp"
 
 int main(){
 
@@ -13,24 +14,24 @@ int main(){
   y <<= 5.5;
   t <<= 6+1.0/3;
 
-  uout() << "t:" << t << std::endl;
+  std::cout << "t:" << t << std::endl;
   t = 5;
-  uout() << "t:" << t << std::endl;
+  std::cout << "t:" << t << std::endl;
   t = t+3;
-  uout() << "t:" << t << std::endl;
+  std::cout << "t:" << t << std::endl;
 
-  uout() << "x:" << x << std::endl;
+  std::cout << "x:" << x << std::endl;
   x = x+3;
-  uout() << "x:" << x << std::endl;
+  std::cout << "x:" << x << std::endl;
   x = x+3;
-  uout() << "x:" << x << std::endl;
+  std::cout << "x:" << x << std::endl;
   x = x+t;
-  uout() << "x:" << x << std::endl;
+  std::cout << "x:" << x << std::endl;
 
   t = x;
-  uout() << "t:" << t << std::endl;
+  std::cout << "t:" << t << std::endl;
   t = 99;
-  uout() << "t:" << t << std::endl;
+  std::cout << "t:" << t << std::endl;
   Recorder z = x+y;
 
   if (z>=20) {
@@ -42,14 +43,14 @@ int main(){
 
   z = z*(x>=0);
 
-  uout() << "z:" << z << std::endl;
+  std::cout << "z:" << z << std::endl;
 
   double znum;
   z >>= znum;
 
  Recorder::stop_recording();
 
-  uout() << znum << std::endl;
+  std::cout << znum << std::endl;
 
   return 0;
 }

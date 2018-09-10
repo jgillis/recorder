@@ -6,6 +6,7 @@ class Recorder {
 public:
   Recorder();
   Recorder(double value);
+  /*Recorder(void);*/
   void operator<<=(double value);
   void operator>>=(double& value);
   explicit operator bool() const;
@@ -25,14 +26,14 @@ public:
     std::istream& operator >> (std::istream& is, const Recorder& a);
 	
   /* Operation + Assignment */
-  inline Recorder& operator += ( double value ) { operator+=(Recorder(value)); }
-  inline Recorder& operator += ( const Recorder& value) { operator=(*this+value); }
-  inline Recorder& operator -= ( double value ) { operator-=(Recorder(value)); }
-  Recorder& operator -= ( const Recorder& value) { operator=(*this-value); }
-  inline Recorder& operator *= ( double value)  { operator*=(Recorder(value)); }
-  Recorder& operator *= ( const Recorder& value) { operator=(*this*value); }
-  inline Recorder& operator /= ( double value)  { operator/=(Recorder(value)); }
-  Recorder& operator /= ( const Recorder& value) { operator=(*this/value); }
+  inline Recorder& operator += ( double value ) { return operator+=(Recorder(value)); }
+  inline Recorder& operator += ( const Recorder& value) { return operator=(*this+value); }
+  inline Recorder& operator -= ( double value ) { return operator-=(Recorder(value)); }
+  Recorder& operator -= ( const Recorder& value) { return operator=(*this-value); }
+  inline Recorder& operator *= ( double value)  { return operator*=(Recorder(value)); }
+  Recorder& operator *= ( const Recorder& value) { return operator=(*this*value); }
+  inline Recorder& operator /= ( double value)  { return operator/=(Recorder(value)); }
+  Recorder& operator /= ( const Recorder& value) { return operator=(*this/value); }
   
   /* Comparison (friends) */
   friend     bool operator != ( const Recorder&, const Recorder& );

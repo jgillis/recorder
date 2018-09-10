@@ -47,20 +47,20 @@ Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
 bool operator>=(const Recorder& lhs, const Recorder& rhs) {
   return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge"));
 }
-Recorder operator<=(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ <= rhs.value_, "le");
+bool operator<=(const Recorder& lhs, const Recorder& rhs) {
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ <= rhs.value_, "le"));
 }
-Recorder operator>(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ > rhs.value_, "gt");
+bool operator>(const Recorder& lhs, const Recorder& rhs) {
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ > rhs.value_, "gt"));
 }
-Recorder operator<(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ < rhs.value_, "lt");
+bool operator<(const Recorder& lhs, const Recorder& rhs) {
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ < rhs.value_, "lt"));
 }
-Recorder operator!=(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ != rhs.value_, "ne");
+bool operator!=(const Recorder& lhs, const Recorder& rhs) {
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ != rhs.value_, "ne"));
 }
-Recorder operator==(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ == rhs.value_, "eq");
+bool operator==(const Recorder& lhs, const Recorder& rhs) {
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ == rhs.value_, "eq"));
 }
 
 Recorder operator-(const Recorder& arg) {

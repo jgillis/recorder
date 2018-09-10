@@ -10,7 +10,6 @@ public:
   void operator>>=(double& value);
   Recorder operator+(const Recorder& rhs) const;
   Recorder operator*(const Recorder& rhs) const;
-  Recorder operator>=(const Recorder& rhs) const;
   explicit operator bool() const;
   inline friend
     std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
@@ -39,29 +38,29 @@ public:
   
   /* Comparison (friends) */
   friend 
-    int operator != ( const Recorder&, const Recorder& );
+    Recorder operator != ( const Recorder&, const Recorder& );
   friend 
-    int operator == ( const Recorder&, const Recorder& );
+    Recorder operator == ( const Recorder&, const Recorder& );
   friend 
-    int operator <= ( const Recorder&, const Recorder& );
+    Recorder operator <= ( const Recorder&, const Recorder& );
   friend 
-    int operator >= ( const Recorder&, const Recorder& );
+    Recorder operator >= ( const Recorder&, const Recorder& );
   friend 
-    int operator >  ( const Recorder&, const Recorder& );
+    Recorder operator >  ( const Recorder&, const Recorder& );
   friend 
-    int operator <  ( const Recorder&, const Recorder& );
+    Recorder operator <  ( const Recorder&, const Recorder& );
   inline friend 
-    int operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
+    Recorder operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
   inline friend 
-    int operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
+    Recorder operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
   inline friend 
-    int operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
+    Recorder operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
   inline friend 
-    int operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
+    Recorder operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
   inline friend 
-    int operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
+    Recorder operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
   inline friend 
-    int operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
+    Recorder operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
 	
   /* sign operators (friends) */
   inline friend Recorder operator + ( const Recorder& x ) { return x; }

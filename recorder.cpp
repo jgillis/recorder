@@ -38,11 +38,31 @@ Recorder Recorder::operator*(const Recorder& rhs) const {
 Recorder Recorder::operator>=(const Recorder& rhs) const {
   return from_binary(*this, rhs, value_ >= rhs.value_, "ge");
 }
+Recorder Recorder::operator<=(const Recorder& rhs) const {
+  return from_binary(*this, rhs, value_ <= rhs.value_, "le");
+}
+Recorder Recorder::operator>(const Recorder& rhs) const {
+  return from_binary(*this, rhs, value_ > rhs.value_, "gt");
+}
+Recorder Recorder::operator<(const Recorder& rhs) const {
+  return from_binary(*this, rhs, value_ < rhs.value_, "lt");
+}
+Recorder Recorder::operator!=(const Recorder& rhs) const {
+  return from_binary(*this, rhs, value_ != rhs.value_, "ne");
+}
+Recorder Recorder::operator==(const Recorder& rhs) const {
+  return from_binary(*this, rhs, value_ == rhs.value_, "eq");
+}
+
+
+
+
 Recorder::operator bool() const {
   stream() << "if ~nom" << std::endl;
   stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;
   bool ret = value_;
-  stream() << "end" << std::endl;    
+  stream() << "end" << std::endl;
+  return ret;
 }
 inline std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
   obj.disp(stream);

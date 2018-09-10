@@ -29,11 +29,17 @@ void Recorder::operator>>=(double& value) {
   counter_output++;
   value = value_;
 }
-Recorder Recorder::operator+(const Recorder& rhs) const {
-  return from_binary(*this, rhs, value_ + rhs.value_, "plus");
+Recorder operator+(const Recorder& lhs, const Recorder& rhs) {
+  return from_binary(lhs, rhs, value_ + rhs.value_, "plus");
 }
-Recorder Recorder::operator*(const Recorder& rhs) const {
-  return from_binary(*this, rhs, value_ * rhs.value_, "times");
+Recorder operator*(const Recorder& lhs, const Recorder& rhs) {
+  return from_binary(lhs, rhs, value_ * rhs.value_, "times");
+}
+Recorder operator-(const Recorder& lhs, const Recorder& rhs) {
+  return from_binary(lhs, rhs, value_ - rhs.value_, "minus");
+}
+Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
+  return from_binary(lhs, rhs, value_ / rhs.value_, "divide");
 }
 Recorder operator>=(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge");
@@ -52,6 +58,10 @@ Recorder operator!=(const Recorder& lhs, const Recorder& rhs) {
 }
 Recorder operator==(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ == rhs.value_, "eq");
+}
+
+Recorder operator-(const Recorder& arg) {
+    return Recorder::from_unary(arg, -arg.value_, "uminus");
 }
 
 Recorder exp(const Recorder& arg) {

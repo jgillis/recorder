@@ -8,8 +8,6 @@ public:
   Recorder(double value);
   void operator<<=(double value);
   void operator>>=(double& value);
-  Recorder operator+(const Recorder& rhs) const;
-  Recorder operator*(const Recorder& rhs) const;
   explicit operator bool() const;
   inline friend
     std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
@@ -27,13 +25,13 @@ public:
     std::istream& operator >> (std::istream& is, const Recorder& a);
 	
   /* Operation + Assignment */
-  Recorder& operator += ( double );
+  inline Recorder& operator += ( double ) { operator+=(Recorder(value)); }
   Recorder& operator += ( const Recorder& );
-  Recorder& operator -= ( double y );
+  inline Recorder& operator -= ( double y ) { operator-=(Recorder(value)); }
   Recorder& operator -= ( const Recorder& );
-  Recorder& operator *= ( double );
+  inline Recorder& operator *= ( double )  { operator*=(Recorder(value)); }
   Recorder& operator *= ( const Recorder& );
-  Recorder& operator /= ( double );
+  inline Recorder& operator /= ( double )  { operator/=(Recorder(value)); }
   Recorder& operator /= ( const Recorder& );
   
   /* Comparison (friends) */

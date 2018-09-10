@@ -8,8 +8,6 @@ public:
   Recorder(double value);
   void operator<<=(double value);
   void operator>>=(double& value);
-  Recorder operator+(const Recorder& rhs) const;
-  Recorder operator*(const Recorder& rhs) const;
   explicit operator bool() const;
   inline friend
     std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
@@ -19,7 +17,7 @@ public:
   /* Assignments */
   double getValue() const;
   inline double value() const;
-  Recorder& operator = ( double );
+  Recorder& operator = ( double arg) { return operator=(Recorder(arg)); }
   Recorder& operator = ( const Recorder& );
   
   /* IO friends */
@@ -27,13 +25,13 @@ public:
     std::istream& operator >> (std::istream& is, const Recorder& a);
 	
   /* Operation + Assignment */
-  Recorder& operator += ( double );
+  inline Recorder& operator += ( double ) { operator+=(Recorder(value)); }
   Recorder& operator += ( const Recorder& );
-  Recorder& operator -= ( double y );
+  inline Recorder& operator -= ( double y ) { operator-=(Recorder(value)); }
   Recorder& operator -= ( const Recorder& );
-  Recorder& operator *= ( double );
+  inline Recorder& operator *= ( double )  { operator*=(Recorder(value)); }
   Recorder& operator *= ( const Recorder& );
-  Recorder& operator /= ( double );
+  inline Recorder& operator /= ( double )  { operator/=(Recorder(value)); }
   Recorder& operator /= ( const Recorder& );
   
   /* Comparison (friends) */
@@ -108,11 +106,11 @@ public:
   friend Recorder ceil  ( const Recorder& );
   friend Recorder floor ( const Recorder& );
   friend Recorder fmax ( const Recorder&, const Recorder& );
-  friend Recorder fmax ( double, const Recorder& );
-  friend Recorder fmax ( const Recorder&, double );
+  inline friend Recorder fmax ( double lhs, const Recorder& rhs) { return fmax(Recorder(lhs), rhs); }
+  inline friend Recorder fmax ( const Recorder& lhs, double rhs) { return fmax(lhs, Recorder(rhs)); }
   friend Recorder fmin ( const Recorder&, const Recorder& );
-  friend Recorder fmin ( double, const Recorder& );
-  friend Recorder fmin ( const Recorder&, double );
+  inline friend Recorder fmin ( double lhs, const Recorder& rhs) { return fmin(Recorder(lhs), rhs); }
+  inline friend Recorder fmin ( const Recorder& lhs, double rhs) { return fmin(lhs, Recorder(rhs)); }
 
   friend Recorder ldexp ( const Recorder&, int );
   friend Recorder frexp ( const Recorder&, int* );

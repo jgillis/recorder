@@ -57,46 +57,64 @@ Recorder operator==(const Recorder& lhs, const Recorder& rhs) {
 Recorder exp(const Recorder& arg) {
     return Recorder::from_unary(arg, exp(arg.value_), "exp");
 }
-Recorder log  ( const Recorder& arg) {
+Recorder log(const Recorder& arg) {
     return Recorder::from_unary(arg, log(arg.value_), "log");
 }
-Recorder sqrt ( const Recorder& arg) {
+Recorder sqrt(const Recorder& arg) {
     return Recorder::from_unary(arg, sqrt(arg.value_), "sqrt");
 }
-Recorder sin  ( const Recorder& arg) {
+Recorder sin(const Recorder& arg) {
     return Recorder::from_unary(arg, sin(arg.value_), "sin");
 }
-Recorder cos  ( const Recorder& arg) {
+Recorder cos(const Recorder& arg) {
     return Recorder::from_unary(arg, cos(arg.value_), "cos");
 }
-Recorder tan  ( const Recorder& arg) {
+Recorder tan(const Recorder& arg) {
     return Recorder::from_unary(arg, tan(arg.value_), "tan");
 }
-Recorder asin ( const Recorder& arg) {
+Recorder asin(const Recorder& arg) {
     return Recorder::from_unary(arg, asin(arg.value_), "asin");
 }
-Recorder acos ( const Recorder& arg) {
+Recorder acos(const Recorder& arg) {
     return Recorder::from_unary(arg, acos(arg.value_), "acos");
 }
-Recorder atan ( const Recorder& arg) {
+Recorder atan(const Recorder& arg) {
     return Recorder::from_unary(arg, atan(arg.value_), "atan");
 }
 
-//friend Recorder    pow   ( const Recorder&, double );
-//friend Recorder sinh  ( const Recorder& );
-//  friend Recorder cosh  ( const Recorder& );
-//  friend Recorder tanh  ( const Recorder& );
-//  friend Recorder asinh ( const Recorder& );
-//  friend Recorder acosh ( const Recorder& );
-//  friend Recorder atanh ( const Recorder& );
-//  friend Recorder erf   ( const Recorder& );
-//  friend Recorder fabs  ( const Recorder& );
-//  friend Recorder ceil  ( const Recorder& );
-//  friend Recorder floor ( const Recorder& );
-
-
-
-
+Recorder log10(const Recorder& arg) {
+    return Recorder::from_unary(arg, log10(arg.value_), "log10");
+}
+Recorder sinh(const Recorder& arg) {
+    return Recorder::from_unary(arg, sinh(arg.value_), "sinh");
+}
+Recorder cosh(const Recorder& arg) {
+    return Recorder::from_unary(arg, cosh(arg.value_), "cosh");
+}
+Recorder tanh(const Recorder& arg) {
+    return Recorder::from_unary(arg, tanh(arg.value_), "tanh");
+}
+Recorder asinh(const Recorder& arg) {
+    return Recorder::from_unary(arg, asinh(arg.value_), "asinh");
+}
+Recorder acosh(const Recorder& arg) {
+    return Recorder::from_unary(arg, acosh(arg.value_), "acosh");
+}
+Recorder atanh(const Recorder& arg) {
+    return Recorder::from_unary(arg, atanh(arg.value_), "atanh");
+}
+Recorder erf(const Recorder& arg) {
+    return Recorder::from_unary(arg, erf(arg.value_), "erf");
+}
+Recorder fabs(const Recorder& arg) {
+    return Recorder::from_unary(arg, fabs(arg.value_), "fabs");
+}
+Recorder ceil(const Recorder& arg) {
+    return Recorder::from_unary(arg, ceil(arg.value_), "ceil");
+}
+Recorder floor(const Recorder& arg) {
+    return Recorder::from_unary(arg, floor(arg.value_), "floor");
+}
 
 Recorder::operator bool() const {
   stream() << "if ~nom" << std::endl;

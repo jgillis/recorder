@@ -38,48 +38,48 @@ public:
   Recorder& operator /= ( const Recorder& );
   
   /* Comparison (friends) */
-  inline friend 
+  friend 
     int operator != ( const Recorder&, const Recorder& );
-  inline friend 
+  friend 
     int operator == ( const Recorder&, const Recorder& );
-  inline friend 
+  friend 
     int operator <= ( const Recorder&, const Recorder& );
-  inline friend 
+  friend 
     int operator >= ( const Recorder&, const Recorder& );
-  inline friend 
+  friend 
     int operator >  ( const Recorder&, const Recorder& );
-  inline friend 
+  friend 
     int operator <  ( const Recorder&, const Recorder& );
   inline friend 
-    int operator != (double, const Recorder& rhs);
+    int operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
   inline friend 
-    int operator == ( double, const Recorder& rhs);
+    int operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
   inline friend 
-    int operator <= ( double, const Recorder& rhs);
+    int operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
   inline friend 
-    int operator >= ( double, const Recorder& rhs);
+    int operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
   inline friend 
-    int operator >  ( double, const Recorder& rhs);
+    int operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
   inline friend 
-    int operator <  ( double, const Recorder& rhs);
+    int operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
 	
   /* sign operators (friends) */
-  friend Recorder operator + ( const Recorder& x );
+  inline friend Recorder operator + ( const Recorder& x ) { return x; }
   friend Recorder operator - ( const Recorder& x );
   
   /* binary operators (friends) */
   friend Recorder operator + ( const Recorder&, const Recorder& );
-  friend Recorder operator + ( double, const Recorder& );
-  friend Recorder operator + ( const Recorder&, double );
+  inline friend Recorder operator + ( double lhs, const Recorder& rhs) { return Recorder(lhs)+rhs; }
+  inline friend Recorder operator + ( const Recorder& lhs, double rhs)  { return lhs+Recorder(rhs); }
   friend Recorder operator - ( const Recorder&, const Recorder& );
-  inline friend Recorder operator - ( const Recorder&, double );
-  friend Recorder operator - ( double, const Recorder& );
+  inline friend Recorder operator - ( const Recorder&, double ) { return lhs-Recorder(rhs); }
+  inline friend Recorder operator - ( double, const Recorder& )  { return Recorder(lhs)-rhs; }
   friend Recorder operator * ( const Recorder&, const Recorder& );
-  friend Recorder operator * ( double, const Recorder& );
-  inline friend Recorder operator * ( const Recorder&, double );
-  inline friend Recorder operator / ( const Recorder&, double );
+  inline friend Recorder operator * ( double lhs, const Recorder& rhs)  { return Recorder(lhs)*rhs; }
+  inline friend Recorder operator * ( const Recorder& lhs, double rhs) { return lhs*Recorder(rhs); }
+  inline friend Recorder operator / ( const Recorder& lhs, double rhs) { return lhs/Recorder(rhs); }
   friend Recorder operator / ( const Recorder&, const Recorder& );
-  friend Recorder operator / ( double, const Recorder& );
+  friend Recorder operator / ( double, const Recorder& )  { return Recorder(lhs)/rhs; }
 	
   /* unary operators (friends) */
   friend Recorder exp  ( const Recorder& );
@@ -133,6 +133,7 @@ protected:
   bool is_symbol() const;
   std::string repr() const;
   static Recorder from_binary(const Recorder& lhs, const Recorder& rhs, double res, const std::string& op);
+  static Recorder from_unary(const Recorder& arg, double res, const std::string& op);
 
   static std::ofstream& stream();
   explicit Recorder(double value, int id);

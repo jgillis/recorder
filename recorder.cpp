@@ -94,7 +94,16 @@ Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double 
     return Recorder(res);
   }
 }
-
+Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string& op) {
+  if (arg.is_symbol()) {
+    int id = get_id();
+    stream() << "a" << id << " = " << op << "(" << arg.repr());" << std::endl;
+    stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
+    return Recorder(res, id);
+  } else {
+    return Recorder(res);
+  }
+}
 std::ofstream& Recorder::stream() {
   if (stream_==nullptr) throw std::runtime_error("Stream is not opened");
   return *stream_;

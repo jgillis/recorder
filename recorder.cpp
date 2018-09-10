@@ -29,17 +29,20 @@ void Recorder::operator>>=(double& value) {
   counter_output++;
   value = value_;
 }
+
+double Recorder::getValue() const {return value_;}
+
 Recorder operator+(const Recorder& lhs, const Recorder& rhs) {
-  return from_binary(lhs, rhs, value_ + rhs.value_, "plus");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ + rhs.value_, "plus");
 }
 Recorder operator*(const Recorder& lhs, const Recorder& rhs) {
-  return from_binary(lhs, rhs, value_ * rhs.value_, "times");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ * rhs.value_, "times");
 }
 Recorder operator-(const Recorder& lhs, const Recorder& rhs) {
-  return from_binary(lhs, rhs, value_ - rhs.value_, "minus");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ - rhs.value_, "minus");
 }
 Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
-  return from_binary(lhs, rhs, value_ / rhs.value_, "divide");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "divide");
 }
 Recorder operator>=(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge");
@@ -133,7 +136,7 @@ Recorder::operator bool() const {
   stream() << "end" << std::endl;
   return ret;
 }
-inline std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
+std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
   obj.disp(stream);
   return stream;
 }
@@ -186,7 +189,7 @@ Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double 
 Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string& op) {
   if (arg.is_symbol()) {
     int id = get_id();
-    stream() << "a" << id << " = " << op << "(" << arg.repr());" << std::endl;
+    stream() << "a" << id << " = " << op << "(" << arg.repr() << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
     return Recorder(res, id);
   } else {

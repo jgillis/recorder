@@ -9,30 +9,30 @@ public:
   void operator<<=(double value);
   void operator>>=(double& value);
   explicit operator bool() const;
-  inline friend
+  friend
     std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
   static void start_recording();
   static void stop_recording();
   
   /* Assignments */
   double getValue() const;
-  inline double value() const;
+  inline double value() const {return getValue();}
   Recorder& operator = ( double arg) { return operator=(Recorder(arg)); }
-  Recorder& operator = ( const Recorder& );
+  //Recorder& operator = ( const Recorder& );
   
   /* IO friends */
   inline friend 
     std::istream& operator >> (std::istream& is, const Recorder& a);
 	
   /* Operation + Assignment */
-  inline Recorder& operator += ( double ) { operator+=(Recorder(value)); }
-  Recorder& operator += ( const Recorder& );
-  inline Recorder& operator -= ( double y ) { operator-=(Recorder(value)); }
-  Recorder& operator -= ( const Recorder& );
-  inline Recorder& operator *= ( double )  { operator*=(Recorder(value)); }
-  Recorder& operator *= ( const Recorder& );
-  inline Recorder& operator /= ( double )  { operator/=(Recorder(value)); }
-  Recorder& operator /= ( const Recorder& );
+  inline Recorder& operator += ( double value ) { operator+=(Recorder(value)); }
+  inline Recorder& operator += ( const Recorder& value) { operator=(*this+value); }
+  inline Recorder& operator -= ( double value ) { operator-=(Recorder(value)); }
+  Recorder& operator -= ( const Recorder& value) { operator=(*this-value); }
+  inline Recorder& operator *= ( double value)  { operator*=(Recorder(value)); }
+  Recorder& operator *= ( const Recorder& value) { operator=(*this*value); }
+  inline Recorder& operator /= ( double value)  { operator/=(Recorder(value)); }
+  Recorder& operator /= ( const Recorder& value) { operator=(*this/value); }
   
   /* Comparison (friends) */
   friend 
@@ -69,14 +69,14 @@ public:
   inline friend Recorder operator + ( double lhs, const Recorder& rhs) { return Recorder(lhs)+rhs; }
   inline friend Recorder operator + ( const Recorder& lhs, double rhs)  { return lhs+Recorder(rhs); }
   friend Recorder operator - ( const Recorder&, const Recorder& );
-  inline friend Recorder operator - ( const Recorder&, double ) { return lhs-Recorder(rhs); }
-  inline friend Recorder operator - ( double, const Recorder& )  { return Recorder(lhs)-rhs; }
+  inline friend Recorder operator - ( const Recorder& lhs, double rhs ) { return lhs-Recorder(rhs); }
+  inline friend Recorder operator - ( double lhs, const Recorder& rhs )  { return Recorder(lhs)-rhs; }
   friend Recorder operator * ( const Recorder&, const Recorder& );
   inline friend Recorder operator * ( double lhs, const Recorder& rhs)  { return Recorder(lhs)*rhs; }
   inline friend Recorder operator * ( const Recorder& lhs, double rhs) { return lhs*Recorder(rhs); }
   inline friend Recorder operator / ( const Recorder& lhs, double rhs) { return lhs/Recorder(rhs); }
   friend Recorder operator / ( const Recorder&, const Recorder& );
-  friend Recorder operator / ( double, const Recorder& )  { return Recorder(lhs)/rhs; }
+  friend Recorder operator / ( double lhs, const Recorder& rhs )  { return Recorder(lhs)/rhs; }
 	
   /* unary operators (friends) */
   friend Recorder exp  ( const Recorder& );

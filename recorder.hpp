@@ -10,7 +10,6 @@ public:
   void operator>>=(double& value);
   Recorder operator+(const Recorder& rhs) const;
   Recorder operator*(const Recorder& rhs) const;
-  Recorder operator>=(const Recorder& rhs) const;
   explicit operator bool() const;
   inline friend
     std::ostream& operator<<(std::ostream &stream, const Recorder& obj);

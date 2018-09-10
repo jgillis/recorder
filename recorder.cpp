@@ -25,7 +25,7 @@ void Recorder::operator>>=(double& value) {
   if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");
   stream() << "if ~nom" << std::endl;
   stream() << "y{" << counter_output+1 << "} = " << repr() << ";"  << std::endl;
-  stream() << "end" << std::endl;    
+  stream() << "end" << std::endl;
   counter_output++;
   value = value_;
 }
@@ -35,14 +35,75 @@ Recorder Recorder::operator+(const Recorder& rhs) const {
 Recorder Recorder::operator*(const Recorder& rhs) const {
   return from_binary(*this, rhs, value_ * rhs.value_, "times");
 }
-Recorder Recorder::operator>=(const Recorder& rhs) const {
-  return from_binary(*this, rhs, value_ >= rhs.value_, "ge");
+Recorder operator>=(const Recorder& lhs, const Recorder& rhs) {
+  return Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge");
 }
+Recorder operator<=(const Recorder& lhs, const Recorder& rhs) {
+  return Recorder::from_binary(lhs, rhs, lhs.value_ <= rhs.value_, "le");
+}
+Recorder operator>(const Recorder& lhs, const Recorder& rhs) {
+  return Recorder::from_binary(lhs, rhs, lhs.value_ > rhs.value_, "gt");
+}
+Recorder operator<(const Recorder& lhs, const Recorder& rhs) {
+  return Recorder::from_binary(lhs, rhs, lhs.value_ < rhs.value_, "lt");
+}
+Recorder operator!=(const Recorder& lhs, const Recorder& rhs) {
+  return Recorder::from_binary(lhs, rhs, lhs.value_ != rhs.value_, "ne");
+}
+Recorder operator==(const Recorder& lhs, const Recorder& rhs) {
+  return Recorder::from_binary(lhs, rhs, lhs.value_ == rhs.value_, "eq");
+}
+
+Recorder exp(const Recorder& arg) {
+    return Recorder::from_unary(arg, exp(arg.value_), "exp");
+}
+Recorder log  ( const Recorder& arg) {
+    return Recorder::from_unary(arg, log(arg.value_), "log");
+}
+Recorder sqrt ( const Recorder& arg) {
+    return Recorder::from_unary(arg, sqrt(arg.value_), "sqrt");
+}
+Recorder sin  ( const Recorder& arg) {
+    return Recorder::from_unary(arg, sin(arg.value_), "sin");
+}
+Recorder cos  ( const Recorder& arg) {
+    return Recorder::from_unary(arg, cos(arg.value_), "cos");
+}
+Recorder tan  ( const Recorder& arg) {
+    return Recorder::from_unary(arg, tan(arg.value_), "tan");
+}
+Recorder asin ( const Recorder& arg) {
+    return Recorder::from_unary(arg, asin(arg.value_), "asin");
+}
+Recorder acos ( const Recorder& arg) {
+    return Recorder::from_unary(arg, acos(arg.value_), "acos");
+}
+Recorder atan ( const Recorder& arg) {
+    return Recorder::from_unary(arg, atan(arg.value_), "atan");
+}
+
+//friend Recorder    pow   ( const Recorder&, double );
+//friend Recorder sinh  ( const Recorder& );
+//  friend Recorder cosh  ( const Recorder& );
+//  friend Recorder tanh  ( const Recorder& );
+//  friend Recorder asinh ( const Recorder& );
+//  friend Recorder acosh ( const Recorder& );
+//  friend Recorder atanh ( const Recorder& );
+//  friend Recorder erf   ( const Recorder& );
+//  friend Recorder fabs  ( const Recorder& );
+//  friend Recorder ceil  ( const Recorder& );
+//  friend Recorder floor ( const Recorder& );
+
+
+
+
+
 Recorder::operator bool() const {
   stream() << "if ~nom" << std::endl;
   stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;
   bool ret = value_;
-  stream() << "end" << std::endl;    
+  stream() << "end" << std::endl;
+  return ret;
 }
 inline std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
   obj.disp(stream);

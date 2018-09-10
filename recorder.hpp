@@ -35,18 +35,18 @@ public:
   Recorder& operator /= ( const Recorder& value) { operator=(*this/value); }
   
   /* Comparison (friends) */
-  friend     Recorder operator != ( const Recorder&, const Recorder& );
-  friend     Recorder operator == ( const Recorder&, const Recorder& );
-  friend     Recorder operator <= ( const Recorder&, const Recorder& );
-  friend     Recorder operator >= ( const Recorder&, const Recorder& );
-  friend     Recorder operator >  ( const Recorder&, const Recorder& );
-  friend     Recorder operator <  ( const Recorder&, const Recorder& );
-  inline friend    Recorder operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
-  inline friend    Recorder operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
-  inline friend    Recorder operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
-  inline friend    Recorder operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
-  inline friend    Recorder operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
-  inline friend    Recorder operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
+  friend     bool operator != ( const Recorder&, const Recorder& );
+  friend     bool operator == ( const Recorder&, const Recorder& );
+  friend     bool operator <= ( const Recorder&, const Recorder& );
+  friend     bool operator >= ( const Recorder&, const Recorder& );
+  friend     bool operator >  ( const Recorder&, const Recorder& );
+  friend     bool operator <  ( const Recorder&, const Recorder& );
+  inline friend    bool operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
+  inline friend    bool operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
+  inline friend    bool operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
+  inline friend    bool operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
+  inline friend    bool operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
+  inline friend    bool operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
 	
   /* sign operators (friends) */
   inline friend Recorder operator + ( const Recorder& x ) { return x; }

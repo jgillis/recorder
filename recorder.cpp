@@ -44,8 +44,8 @@ Recorder operator-(const Recorder& lhs, const Recorder& rhs) {
 Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "divide");
 }
-Recorder operator>=(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge");
+bool operator>=(const Recorder& lhs, const Recorder& rhs) {
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge"));
 }
 Recorder operator<=(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ <= rhs.value_, "le");

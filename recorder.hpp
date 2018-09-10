@@ -1,16 +1,11 @@
 
-
 #include <iostream>
-#include <fstream>
-#include <ctime>
 
-using namespace casadi;
-using namespace std;
 
 class Recorder {
 public:
-  Recorder() : id_(counter++) {}
-  Recorder(double value) : id_(-1), value_(value) {}
+  Recorder();
+  Recorder(double value);
   void operator<<=(double value);
   void operator>>=(double& value);
   Recorder operator+(const Recorder& rhs) const;

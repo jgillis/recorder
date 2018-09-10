@@ -39,29 +39,29 @@ public:
   
   /* Comparison (friends) */
   friend 
-    int operator != ( const Recorder&, const Recorder& );
+    Recorder operator != ( const Recorder&, const Recorder& );
   friend 
-    int operator == ( const Recorder&, const Recorder& );
+    Recorder operator == ( const Recorder&, const Recorder& );
   friend 
-    int operator <= ( const Recorder&, const Recorder& );
+    Recorder operator <= ( const Recorder&, const Recorder& );
   friend 
-    int operator >= ( const Recorder&, const Recorder& );
+    Recorder operator >= ( const Recorder&, const Recorder& );
   friend 
-    int operator >  ( const Recorder&, const Recorder& );
+    Recorder operator >  ( const Recorder&, const Recorder& );
   friend 
-    int operator <  ( const Recorder&, const Recorder& );
+    Recorder operator <  ( const Recorder&, const Recorder& );
   inline friend 
-    int operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
+    Recorder operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
   inline friend 
-    int operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
+    Recorder operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
   inline friend 
-    int operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
+    Recorder operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
   inline friend 
-    int operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
+    Recorder operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
   inline friend 
-    int operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
+    Recorder operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
   inline friend 
-    int operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
+    Recorder operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
 	
   /* sign operators (friends) */
   inline friend Recorder operator + ( const Recorder& x ) { return x; }

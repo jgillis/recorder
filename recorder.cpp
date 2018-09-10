@@ -42,7 +42,7 @@ Recorder operator-(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ - rhs.value_, "minus");
 }
 Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "divide");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "ldivide");
 }
 bool operator>=(const Recorder& lhs, const Recorder& rhs) {
   return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge"));
@@ -65,6 +65,20 @@ bool operator==(const Recorder& lhs, const Recorder& rhs) {
 
 Recorder operator-(const Recorder& arg) {
     return Recorder::from_unary(arg, -arg.value_, "uminus");
+}
+
+Recorder pow( const Recorder&lhs, const Recorder& rhs) {
+    Recorder::from_binary(lhs, rhs, pow(lhs.value_,rhs.value_), "power");
+}
+
+Recorder fmax ( const Recorder&lhs, const Recorder& rhs) {
+  Recorder::from_binary(lhs, rhs, fmax(lhs.value_,rhs.value_), "fmax");
+}
+Recorder fmin ( const Recorder&lhs, const Recorder& rhs) {
+  Recorder::from_binary(lhs, rhs, fmin(lhs.value_,rhs.value_), "fmin");
+}
+Recorder atan2 ( const Recorder&lhs, const Recorder& rhs) {
+  Recorder::from_binary(lhs, rhs, atan2(lhs.value_,rhs.value_), "atan2");
 }
 
 Recorder exp(const Recorder& arg) {
@@ -139,6 +153,10 @@ Recorder::operator bool() const {
 std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
   obj.disp(stream);
   return stream;
+}
+
+std::istream& operator >> (std::istream& is, const Recorder& a) {
+  throw std::runtime_error("No way!");
 }
 void Recorder::start_recording() {
   stream_ = new std::ofstream("foo.m");

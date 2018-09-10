@@ -22,8 +22,7 @@ public:
   //Recorder& operator = ( const Recorder& );
   
   /* IO friends */
-  inline friend 
-    std::istream& operator >> (std::istream& is, const Recorder& a);
+  friend  std::istream& operator >> (std::istream& is, const Recorder& a);
 	
   /* Operation + Assignment */
   inline Recorder& operator += ( double value ) { return operator+=(Recorder(value)); }
@@ -80,7 +79,7 @@ public:
 	
   /* special operators (friends) */
   /* no internal use of condassign: */
-  friend Recorder    pow   ( const Recorder&, double );
+  inline friend Recorder    pow   ( const Recorder& lhs, double rhs) { return pow(lhs, Recorder(rhs)); }
   friend Recorder    log10 ( const Recorder& );
 
   /* Additional ANSI C standard Math functions Added by DWJ on 8/6/90 */
@@ -107,7 +106,7 @@ public:
   friend Recorder atan2 ( const Recorder&, const Recorder& );
   /* uses condassign internally */
   friend Recorder pow   ( const Recorder&, const Recorder& );
-  friend Recorder pow   ( double, const Recorder& );
+  inline friend Recorder pow   ( double lhs, const Recorder& rhs) { return pow(Recorder(lhs), rhs); }
   /* User defined version of logarithm to test extend_quad macro */
   friend Recorder myquad( const Recorder& );
 	

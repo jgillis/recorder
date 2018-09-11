@@ -1,12 +1,20 @@
+#ifndef Recorder_H_
+#define Recorder_H_
+
 
 #include <iostream>
 
+#if defined _WIN32
+#define DLL_EXPORT __declspec(dllexport)
+#else
+#define DLL_EXPORT
+#endif // defined _WIN32
 
-class Recorder {
+
+class DLL_EXPORT Recorder {
 public:
   Recorder();
   Recorder(double value);
-  /*Recorder(void);*/
   void operator<<=(double value);
   void operator>>=(double& value);
   explicit operator bool() const;
@@ -130,3 +138,5 @@ protected:
   static int counter_output;
   static std::ofstream* stream_;
 };
+
+#endif

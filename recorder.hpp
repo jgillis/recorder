@@ -3,17 +3,17 @@
 
 #include <iostream>
 
-#if defined _WIN32
-#if defined (MAKEDLL)
-    #define DLL_EXPORT __declspec(dllexport)
-#else
-    #define DLL_EXPORT __declspec(dllimport)
-#endif // defined MAKEDLL
-#else
-    #define DLL_EXPORT
-#endif // defined _WIN32
+//#if defined _WIN32
+//#if defined (MAKEDLL)
+//    #define DLL_EXPORT __declspec(dllexport)
+//#else
+//    #define DLL_EXPORT __declspec(dllimport)
+//#endif // defined MAKEDLL
+//#else
+//    #define DLL_EXPORT
+//#endif // defined _WIN32
 
-class DLL_EXPORT Recorder {
+class Recorder {
 public:
   Recorder();
   Recorder(double value);

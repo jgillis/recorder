@@ -3,13 +3,13 @@ set (CMAKE_CXX_STANDARD 11)
 
 project(Recorder)
 
-add_library(recorder SHARED recorder.hpp recorder.cpp)
+add_library(recorder recorder.hpp recorder.cpp)
 target_compile_definitions(recorder PRIVATE MAKEDLL)
 
-add_executable(test test.cpp)
-target_link_libraries(test recorder)
+# add_executable(test test.cpp)
+# target_link_libraries(test recorder)
 
-install(TARGETS test DESTINATION bin)
+# install(TARGETS test DESTINATION bin)
 file(GLOB HEADERS *.hpp)
 install(FILES ${HEADERS} DESTINATION include)
 install(TARGETS recorder

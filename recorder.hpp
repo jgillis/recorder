@@ -29,17 +29,17 @@ public:
   //Recorder& operator = ( const Recorder& );
   
   /* IO friends */
-  friend  std::istream& operator >> (std::istream& is, const Recorder& a);
+  friend DLL_EXPORT std::istream& operator >> (std::istream& is, const Recorder& a);
 	
   /* Operation + Assignment */
   inline Recorder& operator += ( double value ) { return operator+=(Recorder(value)); }
   inline Recorder& operator += ( const Recorder& value) { return operator=(*this+value); }
   inline Recorder& operator -= ( double value ) { return operator-=(Recorder(value)); }
-  Recorder& operator -= ( const Recorder& value) { return operator=(*this-value); }
+  inline Recorder& operator -= ( const Recorder& value) { return operator=(*this-value); }
   inline Recorder& operator *= ( double value)  { return operator*=(Recorder(value)); }
-  Recorder& operator *= ( const Recorder& value) { return operator=(*this*value); }
+  inline Recorder& operator *= ( const Recorder& value) { return operator=(*this*value); }
   inline Recorder& operator /= ( double value)  { return operator/=(Recorder(value)); }
-  Recorder& operator /= ( const Recorder& value) { return operator=(*this/value); }
+  inline Recorder& operator /= ( const Recorder& value) { return operator=(*this/value); }
   
   /* Comparison (friends) */
   friend     bool DLL_EXPORT operator != ( const Recorder&, const Recorder& );

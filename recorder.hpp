@@ -1,15 +1,17 @@
 #ifndef Recorder_H_
 #define Recorder_H_
 
-
 #include <iostream>
 
 #if defined _WIN32
-#define DLL_EXPORT __declspec(dllexport)
+#if defined (MAKEDLL)
+    #define DLL_EXPORT __declspec(dllexport)
 #else
-#define DLL_EXPORT
+    #define DLL_EXPORT __declspec(dllimport)
+#endif // defined MAKEDLL
+#else
+    #define DLL_EXPORT
 #endif // defined _WIN32
-
 
 class DLL_EXPORT Recorder {
 public:
@@ -22,26 +24,26 @@ public:
     std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
   static void start_recording();
   static void stop_recording();
-  
+
   /* Assignments */
   double getValue() const;
   inline double value() const {return getValue();}
   Recorder& operator = ( double arg) { return operator=(Recorder(arg)); }
   //Recorder& operator = ( const Recorder& );
-  
+
   /* IO friends */
   friend  std::istream& operator >> (std::istream& is, const Recorder& a);
-	
+
   /* Operation + Assignment */
   inline Recorder& operator += ( double value ) { return operator+=(Recorder(value)); }
   inline Recorder& operator += ( const Recorder& value) { return operator=(*this+value); }
   inline Recorder& operator -= ( double value ) { return operator-=(Recorder(value)); }
-  Recorder& operator -= ( const Recorder& value) { return operator=(*this-value); }
+  inline Recorder& operator -= ( const Recorder& value) { return operator=(*this-value); }
   inline Recorder& operator *= ( double value)  { return operator*=(Recorder(value)); }
-  Recorder& operator *= ( const Recorder& value) { return operator=(*this*value); }
+  inline Recorder& operator *= ( const Recorder& value) { return operator=(*this*value); }
   inline Recorder& operator /= ( double value)  { return operator/=(Recorder(value)); }
-  Recorder& operator /= ( const Recorder& value) { return operator=(*this/value); }
-  
+  inline Recorder& operator /= ( const Recorder& value) { return operator=(*this/value); }
+
   /* Comparison (friends) */
   friend     bool operator != ( const Recorder&, const Recorder& );
   friend     bool operator == ( const Recorder&, const Recorder& );
@@ -49,17 +51,17 @@ public:
   friend     bool operator >= ( const Recorder&, const Recorder& );
   friend     bool operator >  ( const Recorder&, const Recorder& );
   friend     bool operator <  ( const Recorder&, const Recorder& );
-  inline friend    bool operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
+  inline friend    bool operator != ( double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
   inline friend    bool operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
   inline friend    bool operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
   inline friend    bool operator >= ( double lhs, const Recorder& rhs) { return Recorder(lhs)>=rhs; }
   inline friend    bool operator >  ( double lhs, const Recorder& rhs) { return Recorder(lhs)>rhs; }
   inline friend    bool operator <  ( double lhs, const Recorder& rhs) { return Recorder(lhs)<rhs; }
-	
+
   /* sign operators (friends) */
   inline friend Recorder operator + ( const Recorder& x ) { return x; }
   friend Recorder operator - ( const Recorder& x );
-  
+
   /* binary operators (friends) */
   friend Recorder operator + ( const Recorder&, const Recorder& );
   inline friend Recorder operator + ( double lhs, const Recorder& rhs) { return Recorder(lhs)+rhs; }
@@ -73,7 +75,7 @@ public:
   inline friend Recorder operator / ( const Recorder& lhs, double rhs) { return lhs/Recorder(rhs); }
   friend Recorder operator / ( const Recorder&, const Recorder& );
   friend Recorder operator / ( double lhs, const Recorder& rhs )  { return Recorder(lhs)/rhs; }
-	
+
   /* unary operators (friends) */
   friend Recorder exp  ( const Recorder& );
   friend Recorder log  ( const Recorder& );
@@ -84,7 +86,7 @@ public:
   friend Recorder asin ( const Recorder& );
   friend Recorder acos ( const Recorder& );
   friend Recorder atan ( const Recorder& );
-	
+
   /* special operators (friends) */
   /* no internal use of condassign: */
   inline friend Recorder    pow   ( const Recorder& lhs, double rhs) { return pow(lhs, Recorder(rhs)); }
@@ -117,9 +119,7 @@ public:
   inline friend Recorder pow   ( double lhs, const Recorder& rhs) { return pow(Recorder(lhs), rhs); }
   /* User defined version of logarithm to test extend_quad macro */
   friend Recorder myquad( const Recorder& );
-	
-  
-   
+
 protected:
   void disp(std::ostream &stream) const;
   static double get_id();

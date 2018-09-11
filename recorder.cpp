@@ -8,7 +8,6 @@
 #include <iomanip>
 #include "recorder.hpp"
 
-
 Recorder::Recorder() : id_(counter++) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {

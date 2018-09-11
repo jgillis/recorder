@@ -6,6 +6,7 @@
 #include <ctime>
 #include <stdexcept>
 #include <iomanip>
+#include <cmath>
 #include "recorder.hpp"
 
 

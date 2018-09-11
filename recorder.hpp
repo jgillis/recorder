@@ -18,8 +18,7 @@ public:
   void operator<<=(double value);
   void operator>>=(double& value);
   explicit operator bool() const;
-  friend
-    std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
+  friend DLL_EXPORT std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
   static void start_recording();
   static void stop_recording();
   
@@ -43,12 +42,12 @@ public:
   Recorder& operator /= ( const Recorder& value) { return operator=(*this/value); }
   
   /* Comparison (friends) */
-  friend     bool operator != ( const Recorder&, const Recorder& );
-  friend     bool operator == ( const Recorder&, const Recorder& );
-  friend     bool operator <= ( const Recorder&, const Recorder& );
-  friend     bool operator >= ( const Recorder&, const Recorder& );
-  friend     bool operator >  ( const Recorder&, const Recorder& );
-  friend     bool operator <  ( const Recorder&, const Recorder& );
+  friend     bool DLL_EXPORT operator != ( const Recorder&, const Recorder& );
+  friend     bool DLL_EXPORT operator == ( const Recorder&, const Recorder& );
+  friend     bool DLL_EXPORT operator <= ( const Recorder&, const Recorder& );
+  friend     bool DLL_EXPORT operator >= ( const Recorder&, const Recorder& );
+  friend     bool DLL_EXPORT operator >  ( const Recorder&, const Recorder& );
+  friend     bool DLL_EXPORT operator <  ( const Recorder&, const Recorder& );
   inline friend    bool operator != (double lhs, const Recorder& rhs) { return Recorder(lhs)!=rhs; }
   inline friend    bool operator == ( double lhs, const Recorder& rhs) { return Recorder(lhs)==rhs; }
   inline friend    bool operator <= ( double lhs, const Recorder& rhs) { return Recorder(lhs)<=rhs; }
@@ -58,71 +57,71 @@ public:
 	
   /* sign operators (friends) */
   inline friend Recorder operator + ( const Recorder& x ) { return x; }
-  friend Recorder operator - ( const Recorder& x );
+  friend Recorder DLL_EXPORT  operator - ( const Recorder& x );
   
   /* binary operators (friends) */
-  friend Recorder operator + ( const Recorder&, const Recorder& );
+  friend Recorder DLL_EXPORT operator + ( const Recorder&, const Recorder& );
   inline friend Recorder operator + ( double lhs, const Recorder& rhs) { return Recorder(lhs)+rhs; }
   inline friend Recorder operator + ( const Recorder& lhs, double rhs)  { return lhs+Recorder(rhs); }
-  friend Recorder operator - ( const Recorder&, const Recorder& );
+  friend DLL_EXPORT Recorder operator - ( const Recorder&, const Recorder& );
   inline friend Recorder operator - ( const Recorder& lhs, double rhs ) { return lhs-Recorder(rhs); }
   inline friend Recorder operator - ( double lhs, const Recorder& rhs )  { return Recorder(lhs)-rhs; }
-  friend Recorder operator * ( const Recorder&, const Recorder& );
+  friend DLL_EXPORT Recorder operator * ( const Recorder&, const Recorder& );
   inline friend Recorder operator * ( double lhs, const Recorder& rhs)  { return Recorder(lhs)*rhs; }
   inline friend Recorder operator * ( const Recorder& lhs, double rhs) { return lhs*Recorder(rhs); }
   inline friend Recorder operator / ( const Recorder& lhs, double rhs) { return lhs/Recorder(rhs); }
-  friend Recorder operator / ( const Recorder&, const Recorder& );
+  friend DLL_EXPORT Recorder operator / ( const Recorder&, const Recorder& );
   friend Recorder operator / ( double lhs, const Recorder& rhs )  { return Recorder(lhs)/rhs; }
 	
   /* unary operators (friends) */
-  friend Recorder exp  ( const Recorder& );
-  friend Recorder log  ( const Recorder& );
-  friend Recorder sqrt ( const Recorder& );
-  friend Recorder sin  ( const Recorder& );
-  friend Recorder cos  ( const Recorder& );
-  friend Recorder tan  ( const Recorder& );
-  friend Recorder asin ( const Recorder& );
-  friend Recorder acos ( const Recorder& );
-  friend Recorder atan ( const Recorder& );
+  friend Recorder DLL_EXPORT exp  ( const Recorder& );
+  friend Recorder DLL_EXPORT log  ( const Recorder& );
+  friend Recorder DLL_EXPORT sqrt ( const Recorder& );
+  friend Recorder DLL_EXPORT sin  ( const Recorder& );
+  friend Recorder DLL_EXPORT cos  ( const Recorder& );
+  friend Recorder DLL_EXPORT tan  ( const Recorder& );
+  friend Recorder DLL_EXPORT asin ( const Recorder& );
+  friend Recorder DLL_EXPORT acos ( const Recorder& );
+  friend Recorder DLL_EXPORT atan ( const Recorder& );
 	
   /* special operators (friends) */
   /* no internal use of condassign: */
   inline friend Recorder    pow   ( const Recorder& lhs, double rhs) { return pow(lhs, Recorder(rhs)); }
-  friend Recorder    log10 ( const Recorder& );
+  friend DLL_EXPORT Recorder    log10 ( const Recorder& );
 
   /* Additional ANSI C standard Math functions Added by DWJ on 8/6/90 */
-  friend Recorder sinh  ( const Recorder& );
-  friend Recorder cosh  ( const Recorder& );
-  friend Recorder tanh  ( const Recorder& );
-  friend Recorder asinh ( const Recorder& );
-  friend Recorder acosh ( const Recorder& );
-  friend Recorder atanh ( const Recorder& );
-  friend Recorder erf   ( const Recorder& );
-  friend Recorder fabs  ( const Recorder& );
-  friend Recorder ceil  ( const Recorder& );
-  friend Recorder floor ( const Recorder& );
-  friend Recorder fmax ( const Recorder&, const Recorder& );
+  friend Recorder DLL_EXPORT sinh  ( const Recorder& );
+  friend Recorder DLL_EXPORT cosh  ( const Recorder& );
+  friend Recorder DLL_EXPORT tanh  ( const Recorder& );
+  friend Recorder DLL_EXPORT asinh ( const Recorder& );
+  friend Recorder DLL_EXPORT acosh ( const Recorder& );
+  friend Recorder DLL_EXPORT atanh ( const Recorder& );
+  friend Recorder DLL_EXPORT erf   ( const Recorder& );
+  friend Recorder DLL_EXPORT fabs  ( const Recorder& );
+  friend Recorder DLL_EXPORT ceil  ( const Recorder& );
+  friend Recorder DLL_EXPORT floor ( const Recorder& );
+  friend Recorder DLL_EXPORT fmax ( const Recorder&, const Recorder& );
   inline friend Recorder fmax ( double lhs, const Recorder& rhs) { return fmax(Recorder(lhs), rhs); }
   inline friend Recorder fmax ( const Recorder& lhs, double rhs) { return fmax(lhs, Recorder(rhs)); }
-  friend Recorder fmin ( const Recorder&, const Recorder& );
+  friend Recorder DLL_EXPORT fmin ( const Recorder&, const Recorder& );
   inline friend Recorder fmin ( double lhs, const Recorder& rhs) { return fmin(Recorder(lhs), rhs); }
   inline friend Recorder fmin ( const Recorder& lhs, double rhs) { return fmin(lhs, Recorder(rhs)); }
 
-  friend Recorder ldexp ( const Recorder&, int );
-  friend Recorder frexp ( const Recorder&, int* );
+  //friend Recorder ldexp ( const Recorder&, int );
+  //friend Recorder frexp ( const Recorder&, int* );
   /* special operators (friends) */
-  friend Recorder atan2 ( const Recorder&, const Recorder& );
+  friend Recorder DLL_EXPORT  atan2 ( const Recorder&, const Recorder& );
   /* uses condassign internally */
-  friend Recorder pow   ( const Recorder&, const Recorder& );
+  friend Recorder DLL_EXPORT pow   ( const Recorder&, const Recorder& );
   inline friend Recorder pow   ( double lhs, const Recorder& rhs) { return pow(Recorder(lhs), rhs); }
   /* User defined version of logarithm to test extend_quad macro */
-  friend Recorder myquad( const Recorder& );
+  //friend Recorder myquad( const Recorder& );
 	
   
    
 protected:
   void disp(std::ostream &stream) const;
-  static double get_id();
+  static int get_id();
   bool is_symbol() const;
   std::string repr() const;
   static Recorder from_binary(const Recorder& lhs, const Recorder& rhs, double res, const std::string& op);

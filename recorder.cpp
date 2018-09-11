@@ -68,17 +68,17 @@ Recorder operator-(const Recorder& arg) {
 }
 
 Recorder pow( const Recorder&lhs, const Recorder& rhs) {
-    Recorder::from_binary(lhs, rhs, pow(lhs.value_,rhs.value_), "power");
+    return Recorder::from_binary(lhs, rhs, pow(lhs.value_,rhs.value_), "power");
 }
 
 Recorder fmax ( const Recorder&lhs, const Recorder& rhs) {
-  Recorder::from_binary(lhs, rhs, fmax(lhs.value_,rhs.value_), "fmax");
+	return Recorder::from_binary(lhs, rhs, fmax(lhs.value_,rhs.value_), "fmax");
 }
 Recorder fmin ( const Recorder&lhs, const Recorder& rhs) {
-  Recorder::from_binary(lhs, rhs, fmin(lhs.value_,rhs.value_), "fmin");
+	return Recorder::from_binary(lhs, rhs, fmin(lhs.value_,rhs.value_), "fmin");
 }
 Recorder atan2 ( const Recorder&lhs, const Recorder& rhs) {
-  Recorder::from_binary(lhs, rhs, atan2(lhs.value_,rhs.value_), "atan2");
+	return Recorder::from_binary(lhs, rhs, atan2(lhs.value_,rhs.value_), "atan2");
 }
 
 Recorder exp(const Recorder& arg) {
@@ -146,7 +146,7 @@ Recorder floor(const Recorder& arg) {
 Recorder::operator bool() const {
   stream() << "if ~nom" << std::endl;
   stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;
-  bool ret = value_;
+  bool ret = value_==1;
   stream() << "end" << std::endl;
   return ret;
 }
@@ -177,7 +177,7 @@ void Recorder::disp(std::ostream &stream) const {
     stream << "(" << value_ << ")";
   }
 }
-double Recorder::get_id() {
+int Recorder::get_id() {
   counter++;
   return counter;
 }

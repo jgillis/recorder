@@ -208,7 +208,7 @@ Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double 
 Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string& op) {
   if (arg.is_symbol()) {
     int id = get_id();
-    stream() << "a" << id << " = " << op << "(" << arg.repr() << std::endl;
+    stream() << "a" << id << " = " << op << "(" << arg.repr() << ");" << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
     return Recorder(res, id);
   } else {

@@ -43,7 +43,7 @@ Recorder operator-(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ - rhs.value_, "minus");
 }
 Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "ldivide");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "rdivide");
 }
 bool operator>=(const Recorder& lhs, const Recorder& rhs) {
   return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge"));
@@ -161,7 +161,7 @@ std::istream& operator >> (std::istream& is, const Recorder& a) {
 }
 void Recorder::start_recording() {
   stream_ = new std::ofstream("foo.m");
-  stream() << std::setprecision(16);
+  stream() << std::scientific << std::setprecision(16);
   stream() << "function y=foo(x)" << std::endl;
   stream() << "nom = nargin==0;" << std::endl;
   counter = 0;
@@ -190,7 +190,7 @@ std::string Recorder::repr() const {
     return "a" + std::to_string(id_);
   } else {
     std::stringstream ss;
-    ss << std::setprecision(16);
+    ss << std::scientific << std::setprecision(16);
     ss << value_;
     return ss.str();
   }

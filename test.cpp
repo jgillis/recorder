@@ -42,7 +42,7 @@ int main(){
 
 
   z = z*(x>=0);
-
+  z = sin(z);
   std::cout << "z:" << z << std::endl;
 
   double znum;

@@ -227,5 +227,5 @@ Recorder::Recorder(double value, int id) {
 int Recorder::counter = 0;
 int Recorder::counter_input = 0;
 int Recorder::counter_output = 0;
-std::ofstream* Recorder::stream_ = new std::ofstream("foo.m");
+std::ofstream* Recorder::stream_ = nullptr;
 

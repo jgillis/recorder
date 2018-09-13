@@ -14,11 +14,13 @@ Recorder::Recorder(const Recorder& r) {
   value_ = r.value_;
   if (r.is_symbol()) {
     id_ = get_id();
+    stream() << "a" + std::to_string(id_) << " = " << r.repr() << ";% copy constructor" << value_ << std::endl;
   } else {
     id_ = -1;
   }
 }
-Recorder::Recorder() : id_(counter++), value_(3.14) {}
+
+Recorder::Recorder() : id_(get_id()), value_(3.14) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
   if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");
@@ -35,6 +37,7 @@ Recorder& Recorder::operator = ( const Recorder& r) {
   value_ = r.value_;
   if (r.is_symbol()) {
     id_ = get_id();
+    stream() << "a" + std::to_string(id_) << " = " << r.repr() << ";% copy assignment" << value_ << std::endl;
   } else {
     id_ = -1;
   }
@@ -43,7 +46,7 @@ Recorder& Recorder::operator = ( const Recorder& r) {
 void Recorder::operator>>=(double& value) {
   if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");
   stream() << "if ~nom" << std::endl;
-  stream() << "y{" << counter_output+1 << "} = " << repr() << ";"  << std::endl;
+  stream() << "y{" << counter_output+1 << "} = " << repr() << ";%" << value_  << std::endl;
   stream() << "end" << std::endl;
   counter_output++;
   value = value_;

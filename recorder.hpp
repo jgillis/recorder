@@ -13,6 +13,7 @@
 
 class DLL_EXPORT Recorder {
 public:
+  ~Recorder();
   Recorder();
   Recorder(double value);
   void operator<<=(double value);
@@ -20,7 +21,6 @@ public:
   explicit operator bool() const;
   Recorder(const Recorder& r);
   friend DLL_EXPORT std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
-  static void start_recording();
   static void stop_recording();
   
   /* Assignments */
@@ -136,7 +136,6 @@ protected:
   static int counter;
   static int counter_input;
   static int counter_output;
-  static std::ofstream* stream_;
 };
 
 #endif

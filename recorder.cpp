@@ -20,10 +20,15 @@ Recorder::Recorder(const Recorder& r) {
   }
 }
 
-Recorder::Recorder() : id_(get_id()), value_(3.14) {}
+Recorder::~Recorder() {
+       if(id_ == 0) std::cout << "goodbyw" << id_ << ":" << value_ << std::endl;
+}
+
+Recorder::Recorder() : id_(-1), value_(3.14) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
-  if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");
+  if (is_symbol()) throw std::runtime_error("Needs to be symbolic");
+  id_ = get_id();
   stream() << "if nom" << std::endl;
   stream() << "  " << repr() << " = " << value << ";" << std::endl;
   stream() << "else" << std::endl;
@@ -94,10 +99,10 @@ Recorder pow( const Recorder&lhs, const Recorder& rhs) {
 }
 
 Recorder fmax ( const Recorder&lhs, const Recorder& rhs) {
-	return Recorder::from_binary(lhs, rhs, fmax(lhs.value_,rhs.value_), "fmax");
+	return Recorder::from_binary(lhs, rhs, fmax(lhs.value_,rhs.value_), "max");
 }
 Recorder fmin ( const Recorder&lhs, const Recorder& rhs) {
-	return Recorder::from_binary(lhs, rhs, fmin(lhs.value_,rhs.value_), "fmin");
+	return Recorder::from_binary(lhs, rhs, fmin(lhs.value_,rhs.value_), "min");
 }
 Recorder atan2 ( const Recorder&lhs, const Recorder& rhs) {
 	return Recorder::from_binary(lhs, rhs, atan2(lhs.value_,rhs.value_), "atan2");
@@ -170,7 +175,7 @@ Recorder::operator bool() const {
 
     if (is_symbol()) {
       stream() << "if ~nom" << std::endl;
-      stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;
+      /*stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;*/
       stream() << "end" << std::endl;
     }
     return ret;
@@ -183,17 +188,9 @@ std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
 std::istream& operator >> (std::istream& is, const Recorder& a) {
   throw std::runtime_error("No way!");
 }
-void Recorder::start_recording() {
-  //stream_ = new std::ofstream("foo.m");
-  stream() << std::scientific << std::setprecision(16);
-  stream() << "function y=foo(x)" << std::endl;
-  stream() << "nom = nargin==0;" << std::endl;
-  counter = 0;
-}
+
 void Recorder::stop_recording() {
   stream() << "if ~nom, y = vertcat(y{:}); end;" << std::endl;
-  delete stream_;
-  stream_ = nullptr;
 }
 void Recorder::disp(std::ostream &stream) const {
   if (is_symbol()) {
@@ -254,9 +251,24 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
     return Recorder(res);
   }
 }
+
+
+class StreamWrapper {
+public:
+    StreamWrapper() {
+        stream = new std::ofstream("foo.m");
+        (*stream) << std::scientific << std::setprecision(16);
+        (*stream) << "function y=foo(x)" << std::endl;
+        (*stream) << "nom = nargin==0;" << std::endl;
+    }
+
+    std::ofstream* stream;
+};
+static StreamWrapper stream_wrapper{};
+
+
 std::ofstream& Recorder::stream() {
-  if (stream_==nullptr) throw std::runtime_error("Stream is not opened ggg");
-  return *stream_;
+  return *stream_wrapper.stream;
 };
 Recorder::Recorder(double value, int id) {
   id_ = id;
@@ -266,6 +278,3 @@ Recorder::Recorder(double value, int id) {
 int Recorder::counter = 0;
 int Recorder::counter_input = 0;
 int Recorder::counter_output = 0;
-std::ofstream* Recorder::stream_ = new std::ofstream("foo.m");
-//std::ofstream* Recorder::stream_ = nullptr;
-

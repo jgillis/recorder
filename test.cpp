@@ -4,8 +4,6 @@ int main(){
 
   double p = 7;
 
-  Recorder::start_recording();
-
   Recorder x;
   Recorder y;
   Recorder t;

@@ -10,6 +10,14 @@
 #include "recorder.hpp"
 
 
+Recorder::Recorder(const Recorder& r) {
+  value_ = r.value_;
+  if (r.is_symbol()) {
+    id_ = get_id();
+  } else {
+    id_ = -1;
+  }
+}
 Recorder::Recorder() : id_(counter++), value_(3.14) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
@@ -21,6 +29,16 @@ void Recorder::operator<<=(double value) {
   stream() << "end" << std::endl;
   counter_input++;
   value_ = value;
+}
+
+Recorder& Recorder::operator = ( const Recorder& r) {
+  value_ = r.value_;
+  if (r.is_symbol()) {
+    id_ = get_id();
+  } else {
+    id_ = -1;
+  }
+  return *this;
 }
 void Recorder::operator>>=(double& value) {
   if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");

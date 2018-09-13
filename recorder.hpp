@@ -18,6 +18,7 @@ public:
   void operator<<=(double value);
   void operator>>=(double& value);
   explicit operator bool() const;
+  Recorder(const Recorder& r);
   friend DLL_EXPORT std::ostream& operator<<(std::ostream &stream, const Recorder& obj);
   static void start_recording();
   static void stop_recording();
@@ -26,7 +27,7 @@ public:
   double getValue() const;
   inline double value() const {return getValue();}
   Recorder& operator = ( double arg) { return operator=(Recorder(arg)); }
-  //Recorder& operator = ( const Recorder& );
+  Recorder& operator = ( const Recorder& );
   
   /* IO friends */
   friend DLL_EXPORT std::istream& operator >> (std::istream& is, const Recorder& a);

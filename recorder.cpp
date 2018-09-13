@@ -10,7 +10,7 @@
 #include "recorder.hpp"
 
 
-Recorder::Recorder() : id_(counter++) {}
+Recorder::Recorder() : id_(counter++), value_(3.14) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
   if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");
@@ -145,11 +145,14 @@ Recorder floor(const Recorder& arg) {
 }
 
 Recorder::operator bool() const {
-  stream() << "if ~nom" << std::endl;
-  stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;
-  bool ret = value_==1;
-  stream() << "end" << std::endl;
-  return ret;
+   bool ret = value_==1;
+
+    if (is_symbol()) {
+      stream() << "if ~nom" << std::endl;
+      stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;
+      stream() << "end" << std::endl;
+    }
+    return ret;
 }
 std::ostream& operator<<(std::ostream &stream, const Recorder& obj) {
   obj.disp(stream);
@@ -160,7 +163,7 @@ std::istream& operator >> (std::istream& is, const Recorder& a) {
   throw std::runtime_error("No way!");
 }
 void Recorder::start_recording() {
-  stream_ = new std::ofstream("foo.m");
+  //stream_ = new std::ofstream("foo.m");
   stream() << std::scientific << std::setprecision(16);
   stream() << "function y=foo(x)" << std::endl;
   stream() << "nom = nargin==0;" << std::endl;
@@ -200,6 +203,11 @@ Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double 
     int id = get_id();
     stream() << "a" << id << " = " << op << "(" << lhs.repr() <<  "," <<   rhs.repr() << ");" << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
+
+    if (res>0 && res<1e-200) {
+        stream() << "& suspicious activity" << std::endl;
+  }
+
     return Recorder(res, id);
   } else {
     return Recorder(res);
@@ -216,7 +224,7 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
   }
 }
 std::ofstream& Recorder::stream() {
-  if (stream_==nullptr) throw std::runtime_error("Stream is not opened");
+  if (stream_==nullptr) throw std::runtime_error("Stream is not opened ggg");
   return *stream_;
 };
 Recorder::Recorder(double value, int id) {
@@ -227,5 +235,6 @@ Recorder::Recorder(double value, int id) {
 int Recorder::counter = 0;
 int Recorder::counter_input = 0;
 int Recorder::counter_output = 0;
-std::ofstream* Recorder::stream_ = nullptr;
+std::ofstream* Recorder::stream_ = new std::ofstream("foo.m");
+//std::ofstream* Recorder::stream_ = nullptr;
 

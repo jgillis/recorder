@@ -209,7 +209,7 @@ Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double 
     stream() << "a" << id << " = " << op << "(" << lhs.repr() <<  "," <<   rhs.repr() << ");" << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
 
-    if (is_suspicious(res) && !is_suspicious(lhs.value_) && !is_suspicious(rhs.value_)) {
+    if (is_suspicious(res)) {
       stream() << "% suspicious activity" << std::endl;
     }
 
@@ -224,7 +224,7 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
     stream() << "a" << id << " = " << op << "(" << arg.repr() << ");" << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
 
-    if (is_suspicious(res) && !is_suspicious(arg.value_)) {
+    if (is_suspicious(res)) {
       stream() << "% suspicious activity" << std::endl;
     }
 

@@ -198,15 +198,20 @@ std::string Recorder::repr() const {
     return ss.str();
   }
 }
+
+bool is_suspicious(double v) {
+  return (v>0 && v <1e-200) || (v<0 && v >-1e-200); 
+}
+
 Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double res, const std::string& op) {
   if (lhs.is_symbol() || rhs.is_symbol()) {
     int id = get_id();
     stream() << "a" << id << " = " << op << "(" << lhs.repr() <<  "," <<   rhs.repr() << ");" << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
 
-    if (res>0 && res<1e-200) {
-        stream() << "& suspicious activity" << std::endl;
-  }
+    if (is_suspicious(res) && !is_suspicious(lhs.value_) && !is_suspicious(rhs.value_)) {
+      stream() << "% suspicious activity" << std::endl;
+    }
 
     return Recorder(res, id);
   } else {
@@ -218,6 +223,11 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
     int id = get_id();
     stream() << "a" << id << " = " << op << "(" << arg.repr() << ");" << std::endl;
     stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
+
+    if (is_suspicious(res) && !is_suspicious(arg.value_)) {
+      stream() << "% suspicious activity" << std::endl;
+    }
+
     return Recorder(res, id);
   } else {
     return Recorder(res);

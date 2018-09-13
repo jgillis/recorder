@@ -26,7 +26,7 @@ public:
   /* Assignments */
   double getValue() const;
   inline double value() const {return getValue();}
-  Recorder& operator = ( double arg) { return operator=(Recorder(arg)); }
+  inline Recorder& operator = ( double arg) { return operator=(Recorder(arg)); }
   Recorder& operator = ( const Recorder& );
   
   /* IO friends */

@@ -9,6 +9,8 @@
 #include <cmath>
 #include "recorder.hpp"
 
+static int counter_asserts = 0;
+
 
 Recorder::Recorder(const Recorder& r) {
   value_ = r.value_;
@@ -174,9 +176,7 @@ Recorder::operator bool() const {
    bool ret = value_==1;
 
     if (is_symbol()) {
-      stream() << "if ~nom" << std::endl;
-      /*stream() << "assert(" << repr() << "==" << value_ << ", 'branch error');" << std::endl;*/
-      stream() << "end" << std::endl;
+      stream() << "a{" << counter_asserts+1 << "} = " << repr() << "-" << value_ << ";%" << value_  << std::endl;
     }
     return ret;
 }
@@ -191,6 +191,7 @@ std::istream& operator >> (std::istream& is, const Recorder& a) {
 
 void Recorder::stop_recording() {
   stream() << "if ~nom, y = vertcat(y{:}); end;" << std::endl;
+  stream() << "a = vertcat(a{:});" << std::endl;
 }
 void Recorder::disp(std::ostream &stream) const {
   if (is_symbol()) {

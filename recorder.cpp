@@ -259,7 +259,7 @@ public:
     StreamWrapper() {
         stream = new std::ofstream("foo.m");
         (*stream) << std::scientific << std::setprecision(16);
-        (*stream) << "function y=foo(x)" << std::endl;
+        (*stream) << "function [y,a]=foo(x)" << std::endl;
         (*stream) << "nom = nargin==0;" << std::endl;
     }
 

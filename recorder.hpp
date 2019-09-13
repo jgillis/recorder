@@ -149,6 +149,7 @@ protected:
   static int counter;
   static int counter_input;
   static int counter_output;
+  static int counter_bool;
 };
 
 #endif

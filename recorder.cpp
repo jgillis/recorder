@@ -176,6 +176,7 @@ Recorder::operator bool() const {
    bool ret = value_==1;
 
     if (is_symbol()) {
+      counter_bool++;
       stream() << "a{" << counter_asserts+1 << "} = " << repr() << "-" << value_ << ";%" << value_  << std::endl;
     }
     return ret;
@@ -191,7 +192,9 @@ std::istream& operator >> (std::istream& is, const Recorder& a) {
 
 void Recorder::stop_recording() {
   stream() << "if ~nom, y = vertcat(y{:}); end;" << std::endl;
-  stream() << "a = vertcat(a{:});" << std::endl;
+  if (counter_bool > 0) {
+    stream() << "a = vertcat(a{:});" << std::endl;
+  }
 }
 void Recorder::disp(std::ostream &stream) const {
   if (is_symbol()) {
@@ -279,3 +282,4 @@ Recorder::Recorder(double value, int id) {
 int Recorder::counter = 0;
 int Recorder::counter_input = 0;
 int Recorder::counter_output = 0;
+int Recorder::counter_bool = 0;

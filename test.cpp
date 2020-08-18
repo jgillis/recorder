@@ -1,5 +1,8 @@
 #include "recorder.hpp"
 
+
+static Recorder bar;
+
 int main(){
 
   double p = 7;
@@ -8,47 +11,20 @@ int main(){
   Recorder y;
   Recorder t;
 
-  x <<= 2;
-  y <<= 5.5;
-  t <<= 6+1.0/3;
+  x <<= 1;
+  y <<= 2;
+  t <<= 3;
+  bar <<= 32;
 
-  std::cout << "t:" << t << std::endl;
-  t = 5;
-  std::cout << "t:" << t << std::endl;
-  t = t+3;
-  std::cout << "t:" << t << std::endl;
+  Recorder z = x*3;
 
-  std::cout << "x:" << x << std::endl;
-  x = x+3;
-  std::cout << "x:" << x << std::endl;
-  x = x+3;
-  std::cout << "x:" << x << std::endl;
-  x = x+t;
-  std::cout << "x:" << x << std::endl;
-
-  t = x;
-  std::cout << "t:" << t << std::endl;
-  t = 99;
-  std::cout << "t:" << t << std::endl;
-  Recorder z = x+y;
-
-  std::cout << "z:" << z << std::endl;
-  if (z>=20) {
-    z = z+50;
-  } else {
-    z = z+3;
+  if (z>=0) {
+    z+=y*bar;
   }
 
-  z = z*(x>=0);
-  z = sin(z);
-  std::cout << "z:" << z << std::endl;
-
-  double znum;
-  z >>= znum;
+  double r;
+  z >>= r;
 
   Recorder::stop_recording();
-
-  std::cout << znum << std::endl;
-
   return 0;
 }

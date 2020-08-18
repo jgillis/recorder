@@ -22,10 +22,6 @@ Recorder::Recorder(const Recorder& r) {
   }
 }
 
-Recorder::~Recorder() {
-       if(id_ == 0) std::cout << "goodbyw" << id_ << ":" << value_ << std::endl;
-}
-
 Recorder::Recorder() : id_(-1), value_(3.14) {}
 Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
@@ -266,7 +262,6 @@ public:
     std::ofstream* stream;
 };
 static StreamWrapper stream_wrapper{};
-
 
 std::ofstream& Recorder::stream() {
   return *stream_wrapper.stream;

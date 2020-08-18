@@ -13,7 +13,6 @@
 
 class DLL_EXPORT Recorder {
 public:
-  ~Recorder();
   Recorder();
   Recorder(double value);
   void operator<<=(double value);
@@ -118,8 +117,6 @@ public:
   /* User defined version of logarithm to test extend_quad macro */
   //friend Recorder myquad( const Recorder& );
 	
-  
-   
 protected:
   void disp(std::ostream &stream) const;
   static int get_id();

@@ -32,12 +32,12 @@ int main(){
   std::cout << "t:" << t << std::endl;
   Recorder z = x+y;
 
+  std::cout << "z:" << z << std::endl;
   if (z>=20) {
     z = z+50;
   } else {
     z = z+3;
   }
-
 
   z = z*(x>=0);
   z = sin(z);
@@ -46,7 +46,7 @@ int main(){
   double znum;
   z >>= znum;
 
- Recorder::stop_recording();
+  Recorder::stop_recording();
 
   std::cout << znum << std::endl;
 

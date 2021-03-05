@@ -32,7 +32,7 @@ Recorder::Recorder(const Recorder& r) {
   value_ = r.value_;
   if (r.is_symbol()) {
     id_ = get_id();
-    stream() << "a" + std::to_string(id_) << " = " << r.repr() << ";% copy constructor" << value_ << std::endl;
+    stream() << "\ta" + std::to_string(id_) << " = " << r.repr() << "# copy constructor" << value_ << std::endl;
   } else {
     id_ = -1;
   }
@@ -48,11 +48,10 @@ Recorder::Recorder(double value) : id_(-1), value_(value) {}
 void Recorder::operator<<=(double value) {
   if (is_symbol()) throw std::runtime_error("Needs to be symbolic");
   id_ = get_id();
-  stream() << "if nom" << std::endl;
-  stream() << "  " << repr() << " = " << value << ";" << std::endl;
-  stream() << "else" << std::endl;
-  stream() << "  " << repr() << " = x(" << counter_input+1 << ");" << std::endl;
-  stream() << "end" << std::endl;
+  stream() << "    if nom:" << std::endl;
+  stream() << "        " << repr() << " = " << value << std::endl;
+  stream() << "    else:" << std::endl;
+  stream() << "        " << repr() << " = x[" << counter_input << "]" << std::endl;
   counter_input++;
   value_ = value;
 }
@@ -61,7 +60,7 @@ Recorder& Recorder::operator = ( const Recorder& r) {
   value_ = r.value_;
   if (r.is_symbol()) {
     id_ = get_id();
-    stream() << "a" + std::to_string(id_) << " = " << r.repr() << ";% copy assignment" << value_ << std::endl;
+    stream() << "    a" + std::to_string(id_) << " = " << r.repr() << "# copy assignment" << value_ << std::endl;
   } else {
     id_ = -1;
   }
@@ -70,9 +69,8 @@ Recorder& Recorder::operator = ( const Recorder& r) {
 
 void Recorder::operator>>=(double& value) {
   if (!is_symbol()) throw std::runtime_error("Needs to be symbolic");
-  stream() << "if ~nom" << std::endl;
-  stream() << "y{" << counter_output+1 << "} = " << repr() << ";%" << value_  << std::endl;
-  stream() << "end" << std::endl;
+  stream() << "    if not nom:" << std::endl;
+  stream() << "        y.append(" << repr() << ")#" << value_  << std::endl;
   counter_output++;
   value = value_;
 }
@@ -80,19 +78,19 @@ void Recorder::operator>>=(double& value) {
 double Recorder::getValue() const {return value_;}
 
 Recorder operator+(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ + rhs.value_, "plus");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ + rhs.value_, "np.add");
 }
 Recorder operator*(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ * rhs.value_, "times");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ * rhs.value_, "np.multiply");
 }
 Recorder operator-(const Recorder& lhs, const Recorder& rhs) {
-  return Recorder::from_binary(lhs, rhs, lhs.value_ - rhs.value_, "minus");
+  return Recorder::from_binary(lhs, rhs, lhs.value_ - rhs.value_, "np.subtract");
 }
 Recorder operator/(const Recorder& lhs, const Recorder& rhs) {
   return Recorder::from_binary(lhs, rhs, lhs.value_ / rhs.value_, "rdivide");
 }
 bool operator>=(const Recorder& lhs, const Recorder& rhs) {
-  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "ge"));
+  return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ >= rhs.value_, "np.greater_equal"));
 }
 bool operator<=(const Recorder& lhs, const Recorder& rhs) {
   return static_cast<bool>(Recorder::from_binary(lhs, rhs, lhs.value_ <= rhs.value_, "le"));
@@ -190,8 +188,8 @@ Recorder::operator bool() const {
 
     if (is_symbol()) {
       counter_bool++;
-      stream() << "a{" << counter_asserts+1 << "} = " << repr() << "-" << value_ << ";%" << value_  << std::endl;
-      stream() << "b{" << counter_asserts+1 << "} = " << repr() << ";%" << value_  << std::endl;
+      stream() << "    a.append(" << repr() << "-" << value_ << ")#" << value_  << std::endl;
+      stream() << "    b.append(" << repr() << ")#" << value_  << std::endl;
     }
     return ret;
 }
@@ -206,18 +204,22 @@ std::istream& operator >> (std::istream& is, const Recorder& a) {
 }
 
 void Recorder::stop_recording() {
-  stream() << "if ~nom, y = vertcat(y{:}); end;" << std::endl;
+  stream() << "    if not nom:" << std::endl;
+  stream() << "        y = ca.vertcat(*y)" << std::endl;
+  
   if (counter_bool > 0) {
-    stream() << "a = vertcat(a{:});" << std::endl;
-    stream() << "b = vertcat(b{:});" << std::endl;
+    stream() << "    a = ca.vertcat(*a)" << std::endl;
+    stream() << "    b = ca.vertcat(*b)" << std::endl;
   }
+
+  stream() << "    return y, a, b" << std::endl;
 }
 
 void Recorder::disp(std::ostream &stream) const {
   if (is_symbol()) {
-    stream << "[#" << id_ << "|" << value_ << "]";
+    stream << "    [#" << id_ << "|" << value_ << "]";
   } else {
-    stream << "(" << value_ << ")";
+    stream << "    (" << value_ << ")";
   }
 }
 
@@ -248,11 +250,12 @@ bool is_suspicious(double v) {
 Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double res, const std::string& op) {
   if (lhs.is_symbol() || rhs.is_symbol()) {
     int id = get_id();
-    stream() << "a" << id << " = " << op << "(" << lhs.repr() <<  "," <<   rhs.repr() << ");" << std::endl;
-    stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
+    stream() << "    a" << id << " = " << op << "(" << lhs.repr() <<  "," <<   rhs.repr() << ")" << std::endl;
+    stream() << "    if nom:" << std::endl;
+	stream() << "        assert(" << "a" << id << "==" << res << ")" << std::endl;
 
     if (is_suspicious(res)) {
-      stream() << "% suspicious activity" << std::endl;
+      stream() << "    # suspicious activity" << std::endl;
     }
 
     return Recorder(res, id);
@@ -264,11 +267,12 @@ Recorder Recorder::from_binary(const Recorder& lhs, const Recorder& rhs, double 
 Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string& op) {
   if (arg.is_symbol()) {
     int id = get_id();
-    stream() << "a" << id << " = " << op << "(" << arg.repr() << ");" << std::endl;
-    stream() << "if nom, assert(" << "a" << id << "==" << res << "); end;" << std::endl;
+    stream() << "    a" << id << " = " << op << "(" << arg.repr() << ")" << std::endl;
+    stream() << "    if nom:" << std::endl;
+	stream() << "        assert(" << "a" << id << "==" << res << ")" << std::endl;
 
     if (is_suspicious(res)) {
-      stream() << "% suspicious activity" << std::endl;
+      stream() << "    # suspicious activity" << std::endl;
     }
 
     return Recorder(res, id);
@@ -280,10 +284,17 @@ Recorder Recorder::from_unary(const Recorder& arg, double res, const std::string
 class StreamWrapper {
 public:
     StreamWrapper() {
-        stream = new std::ofstream("foo.m");
-        (*stream) << std::scientific << std::setprecision(16);
-        (*stream) << "function [y,a,b]=foo(x)" << std::endl;
-        (*stream) << "nom = nargin==0;" << std::endl;
+        stream = new std::ofstream("foo.py");
+        (*stream) << std::scientific << std::setprecision(16);		
+        (*stream) << "def foo(*args):" << std::endl;
+		(*stream) << "    import numpy as np" << std::endl;
+		(*stream) << "    import casadi as ca" << std::endl;
+		(*stream) << "    nom = len(args) == 0" << std::endl;
+		(*stream) << "    if not nom:" << std::endl;
+		(*stream) << "        x = args[0]" << std::endl;
+		(*stream) << "    a = []" << std::endl;
+		(*stream) << "    b = []" << std::endl;
+		(*stream) << "    y = []" << std::endl;
     }
 
     std::ofstream* stream;
